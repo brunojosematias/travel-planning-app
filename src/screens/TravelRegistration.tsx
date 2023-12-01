@@ -1,3 +1,5 @@
+// import { StyleSheet } from 'react-native';
+
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import { useContext } from 'react';
@@ -18,15 +20,24 @@ import { formatDate } from '../utils/formatDate';
 import { api } from '../hooks/useApi';
 import { AuthContext } from '../contexts/AuthContext';
 import { Loading } from '../components/Loading';
+// import { Picker } from '@react-native-picker/picker';
+
+// type DestinyType = {
+//   label: string;
+//   value: string;
+// };
 
 export function TravelRegistration() {
   const navigation = useNavigation();
 
+  // const [destiny, setDestiny] = useState('');
   const [destiny, setDestiny] = useState('');
   const [departureDate, setDepartureDate] = useState('');
   const [returnDate, setReturnDate] = useState('');
   const [investmentIntention, setInvestmentIntention] = useState('');
   const [imageUri, setImageUri] = useState('');
+
+  // const [selectedValue, setSelectedValue] = useState<string>('');
 
   const [isLoading, setIsloading] = useState(false);
 
@@ -65,6 +76,10 @@ export function TravelRegistration() {
   async function handleRegisterTrip() {
     setIsloading(true);
 
+    console.log(imageUri);
+
+    // console.log(selectedValue);
+
     try {
       if (!destiny || !departureDate || !returnDate || !investmentIntention) {
         alert('Todos os campos são obrigatórios.');
@@ -91,8 +106,7 @@ export function TravelRegistration() {
           data_fim: returnDate,
           orcamento: removeCurrencyFormatting(investmentIntention),
           destino: destiny,
-          photo:
-            'file:///data/user/0/host.exp.exponent/cache/ExperienceData/@anonymous/app-9ce8e872-3b9b-49b2-ac74-eeceb5ac36fd/ImagePicker/107e68',
+          photo: imageUri,
         },
         {
           headers: {
@@ -118,7 +132,7 @@ export function TravelRegistration() {
   }
 
   function handleCancel() {
-    setDestiny('');
+    // setDestiny('');
     setDepartureDate('');
     setReturnDate('');
     setInvestmentIntention('');
@@ -144,8 +158,29 @@ export function TravelRegistration() {
                   onChangeText={setDestiny}
                 />
 
+                {/* <Picker
+                  style={styles.picker}
+                  selectedValue={selectedValue}
+                  onValueChange={(itemValue) => setSelectedValue(itemValue)}
+                >
+                  <Picker.Item
+                    style={styles.placeholderItem}
+                    label="Selecione um local"
+                    value=""
+                  />
+
+                  {destiny.map((local) => (
+                    <Picker.Item
+                      style={styles.item}
+                      label={local.label}
+                      value={local.value}
+                      key={local.value}
+                    />
+                  ))}
+                </Picker> */}
+
                 <View className="flex-row justify-between mt-[10px]">
-                  <View className="flex-row bg-white items-center pr-[7px] ">
+                  <View className="flex-row bg-white items-center pr-[7px]">
                     <Input
                       className="w-28 focus:border-white"
                       value={departureDate}
@@ -223,3 +258,22 @@ export function TravelRegistration() {
     </>
   );
 }
+
+// const styles = StyleSheet.create({
+//   picker: {
+//     height: 38, // Defina a altura desejada
+//     width: '100%', // Use '100%' para ocupar a largura total
+//     backgroundColor: '#fff', // Cor de fundo
+//     borderRadius: 5, // Borda arredondada
+//   },
+
+//   placeholderItem: {
+//     color: '#888', // Cor do texto
+//     fontSize: 15,
+//   },
+
+//   item: {
+//     color: '#333', // Cor do texto
+//     fontSize: 15,
+//   },
+// });

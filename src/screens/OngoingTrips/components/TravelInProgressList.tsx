@@ -31,8 +31,6 @@ export function TravelInProgressList() {
   const auth = useContext(AuthContext);
 
   function handleTripModalOpen(trip: TripType) {
-    console.log('wdwed32dwfec');
-    console.log(trip);
     setTripModalVisible(true);
     setSelectedTrip(trip);
   }

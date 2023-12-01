@@ -14,6 +14,7 @@ import { formatCurrency } from '../utils/formatCurrency';
 import { formatDate } from '../utils/formatDate';
 import { api } from '../hooks/useApi';
 import { AuthContext } from '../contexts/AuthContext';
+import { Edit } from '../assets/Edit';
 
 type RouteParams = {
   id: number;
@@ -54,7 +55,7 @@ export function EditFormTrips() {
   const route = useRoute();
   const { id } = route.params as RouteParams;
 
-  async function handleEditTrip() {
+  async function handleEditTripStatus() {
     console.log({
       destiny,
       departureDate,
@@ -84,6 +85,40 @@ export function EditFormTrips() {
     setImageUri('');
 
     navigation.navigate('trips');
+  }
+
+  function removeCurrencyFormatting(value: string) {
+    const numericText = value.replace(/[^\d]/g, '');
+
+    const numericValue = parseFloat(numericText) / 100;
+
+    return numericValue.toString();
+  }
+
+  async function editTrip() {
+    try {
+      const { data } = await api.put(
+        `/api/trip/update/${id}`,
+        {
+          data_inicio: departureDate,
+          data_fim: returnDate,
+          orcamento: removeCurrencyFormatting(investmentIntention),
+          destino: destiny,
+          photo: imageUri,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${auth.user?.token}`,
+          },
+        }
+      );
+
+      console.log(data);
+
+      navigation.navigate('trips');
+    } catch (err) {
+      console.log('Error', err);
+    }
   }
 
   function handleCancel() {
@@ -164,7 +199,11 @@ export function EditFormTrips() {
           )}
 
           <View className="flex-row justify-end gap-[6px] mb-[19px]">
-            <Button smallText onPress={handleEditTrip} className="w-[100px]">
+            <Button
+              smallText
+              onPress={handleEditTripStatus}
+              className="w-[100px]"
+            >
               Concluído
             </Button>
             <Button
@@ -174,6 +213,10 @@ export function EditFormTrips() {
             >
               Andamento
             </Button>
+            <TouchableOpacity className="flex-row items-end">
+              <Text onPress={editTrip}>Editar</Text>
+              <Edit />
+            </TouchableOpacity>
           </View>
         </View>
       </View>

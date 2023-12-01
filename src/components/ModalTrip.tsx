@@ -75,7 +75,7 @@ export function ModalTrip({ visible = true, trip, onClose }: Props) {
           <Image
             className="w-[300] h-[300] mt-8"
             source={{
-              uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Fapp-9ce8e872-3b9b-49b2-ac74-eeceb5ac36fd/ImagePicker/71146f74-d6b7-4d4e-bc7a-2e31d9ca1358.jpeg',
+              uri: trip.photo,
             }}
           />
         </View>
